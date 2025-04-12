@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>SPBFrontend #38</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <script src="https://raw.githack.com/strangerintheq/rgba/0.0.8/rgba.js"></script>
+
+    <!-- Подключение стилей Highlight.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/theme/white.min.css">
+    <!-- Reveal.js JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/reveal.js"></script>
+
+    <script>hljs.highlightAll();</script>
+    <style>
+        @font-face {
+            font-family: "Formular";
+            src: url("https://db.onlinewebfonts.com/t/0f106940a384f214837a8df504786e1a.eot");
+            src: url("https://db.onlinewebfonts.com/t/0f106940a384f214837a8df504786e1a.eot?#iefix")format("embedded-opentype"),
+            url("https://db.onlinewebfonts.com/t/0f106940a384f214837a8df504786e1a.woff2")format("woff2"),
+            url("https://db.onlinewebfonts.com/t/0f106940a384f214837a8df504786e1a.woff")format("woff"),
+            url("https://db.onlinewebfonts.com/t/0f106940a384f214837a8df504786e1a.ttf")format("truetype"),
+            url("https://db.onlinewebfonts.com/t/0f106940a384f214837a8df504786e1a.svg#Formular")format("svg");
+        }
+        @font-face {
+            font-family: "Formular Bold";
+            src: url("https://spb-frontend.ru/fonts/Formular-Bold.woff2")format("woff2");
+        }
+    </style>
+    <style>
+
+        .reveal .slide-number {
+            top: 0;
+            bottom: initial;
+            padding: 12px;
+            right: 22px;
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+        .slide-number-a {
+            font-size: 24px;
+        }
+
+        .reveal {
+            width: 100%;
+            height: 100%;
+        }
+
+        .reveal .slides {
+            width: 100%;
+            height: 100%;
+        }
+
+        section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+        }
+
+        h1 {
+            font-family: 'Formular Bold' !important;
+        }
+
+        h2, h3 {
+            font-family: 'Formular Bold' !important;
+            font-weight: 500 !important;
+            line-height: .8 !important;
+        }
+
+        b, strong {
+            font-weight: 500 !important;
+        }
+
+        * {
+            font-family: "Formular" !important;
+            text-transform: none !important;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .im {
+            height: 60vh;
+            margin: 0 auto;
+            margin-bottom: 0vh !important;
+            margin-top: -20vh !important;
+            border-radius: 20px;
+            object-fit: cover;
+        }
+        .prev {
+            height: 70vh;
+            margin: 0 auto;
+            margin-bottom: 0vh !important;
+            margin-top: -8vh !important;
+            border-radius: 20px;
+            object-fit: cover;
+        }
+
+        .prev code {
+            height: 100%;
+            max-height: 100% !important;
+        }
+
+
+        .full {
+            border-radius: 20px;
+            width: calc(100vw - 2em);
+            height: calc(100vh - 2em);
+            border: 1px solid #222;
+        }
+
+        .tggif {
+            height: 90vh;
+            border-radius: 29px;
+        }
+
+        .message {
+            background: #9458ff;
+            padding: .2em .4em;
+            border-radius: 1em 1em 1em .1em;
+        }
+
+        .message.me {
+            border-radius: 1em 1em .1em 1em;
+        }
+
+        .reveal h3 {
+            margin: 12px 0;
+            margin-bottom: 18px;
+        }
+        .reveal h2 {
+            margin: 20px 0;
+            margin-top: 8px;
+        }
+
+        pre {
+            box-shadow: none !important;
+            margin: 0 !important;
+        }
+
+        small {
+            color: #999;
+            margin: 4px 0;
+        }
+
+        :root {
+            --color0: #0e131b;
+            --color1: #191a2c;
+            --color3: #7563f6;
+            --color4: #8163ff;
+        }
+
+        .orgs {
+            display: flex;
+        }
+
+        .orgs > img {
+            height: 4em;
+            width: 4em;
+            border-radius: 100px;
+            border: 20px solid var(--color0);
+            overflow: hidden;
+        }
+
+        .orgs > img:not(:first-child) {
+            margin-left: -1.5em;
+        }
+
+        .logos {
+            position: fixed;
+            bottom: 5vh;
+            left: 50%;
+            transform: translateX(-50%);
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logos > img {
+            height: 1em;
+        }
+
+        .krest {
+            position: relative;
+            width: 1em;
+            height: 1em;
+            display: inline-block;
+            margin: 0 6px;
+        }
+
+        .krest::before,
+        .krest::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50%;
+            height: 3px;
+            background-color: currentColor;
+        }
+
+        .krest::before {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        .krest::after {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+
+        .stories {
+            width: 100vw;;
+            display: flex;
+            justify-content: space-around;
+        }
+        .stories > * {
+            width: 28vw;
+            border-radius: 32px;
+        }
+        .all {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            gap: 2.5vw;
+        }
+        .posts > * {
+            background: var(--img);
+            width: 40vw;
+            height: 40vw;
+            background-size: cover;
+            border-radius: 32px;
+            opacity: 0.1;
+            margin-bottom: 2.5vw;
+        }
+
+        .time {
+            position: absolute;
+            top: 85vh;
+            left: 50%;
+            font-size: 56px;
+            transform: translateX(-50%) !important;
+            font-family: 'Formular Bold' !important;
+        }
+
+        [data-auto-animate="running"] [data-id="time"].time {
+            transform: translateX(-50%) !important;
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <section data-background-color="#0e131b">
+                <div class="container">
+                    <canvas id="canvas" style="opacity: 0.1;position: fixed; z-index: -1; width: 100vw; height: 100vh; top: 0; "></canvas>
+                    <small>Приветствуем всех на</small>
+                    <h1 style="width: 1000px;">SPBFrontend <span style="color: var(--color4);">#38</span></h1>
+                    <small>Усаживаетесь поудобнее, мы скоро начнем</small>
+                </div>
+                <!-- <div class="logos">
+                    <img src="./logo.svg" />
+                </div> -->
+            </section>
+            <section data-background-color="#0e131b">
+                <div style="text-align: center;">
+                    <div style="color: var(--color1); font-size: calc(100vw / 2.1); font-family: 'Formular Bold' !important; margin-top: -40vh;line-height: 1;">SPB</div>
+                    <div class="orgs">
+                        <img class="fragment" src="./orgs/1.jpeg" />
+                        <img class="fragment" src="./orgs/2.jpeg" />
+                        <img class="fragment" src="./orgs/3.png" />
+                        <img class="fragment" src="./orgs/4.png" />
+                        <img class="fragment" src="./orgs/5.png" />
+                        <img class="fragment" src="./orgs/6.png" />
+                        <img class="fragment" src="./orgs/7.png" />
+                        <img class="fragment" src="./orgs/8.png" />
+                        <img class="fragment" src="./orgs/9.png" />
+                        <img class="fragment" src="./orgs/10.jpeg" />
+                    </div>
+                    <div style="color: var(--color1); font-size: calc(100vw / 5.8); font-family: 'Formular Bold' !important; margin-bottom: -70vh;line-height: 1;">FRONTEND</div>
+                </div>
+            </section>
+            <section data-background-color="#0e131b">
+                <div>
+                    <div style="color: var(--color1); font-size: calc(100vw / 5.8); font-family: 'Formular Bold' !important; margin-top: -10vh;line-height: 1;">FRONTEND</div>
+                    <div class="fragment" style="color: var(--color3); font-size: calc(100vw / 5.8); font-family: 'Formular Bold' !important; line-height: 1;">ЗАВТРАКИ</div>
+                    <div class="fragment" style="color: var(--color3); font-size: calc(100vw / 8.8); font-family: 'Formular Bold' !important; line-height: 1;">ГРИБОЕДОВА, 8</div>
+                    <div class="fragment" style="color: var(--color1); font-size: calc(100vw / 7.9); font-family: 'Formular Bold' !important; line-height: 1;">MARKETPLACE</div>
+                    <div class="stories" style="margin-top: -90vh;">
+                        <video class="fragment" src="./stories/1.MP4" muted autoplay loop></video>
+                        <video class="fragment" src="./stories/2.MP4" muted autoplay loop></video>
+                        <video class="fragment" src="./stories/3.MP4" muted autoplay loop></video>
+                    </div>
+                </div>
+            </section>
+            <section data-background-color="#0e131b" data-auto-animate>
+                <div class="all" data-auto-animate-target style="transform: translateX(-12.5vw) translateY(-3.5vw) !important;">
+                    <div data-id="posts1" class="posts" data-auto-animate-target style="--img: #8263ff; transform: translateY(-45vw) !important;">
+                        <div data-id="posts11"></div>
+                        <div data-id="posts12" style="opacity: 0.1;"></div>
+                        <div data-id="posts13"></div>
+                    </div>
+                    <div data-id="posts2" class="posts" data-auto-animate-target style="--img: url('./posts/1.jpeg'); transform: translateY(-35vw) !important;">
+                        <div data-id="posts21"></div>
+                        <div data-id="posts22" style="opacity: 1;"></div>
+                        <div data-id="posts23"></div>
+                    </div>
+                    <div data-id="posts3" class="posts" data-auto-animate-target style="--img: url('./posts/2.jpeg'); transform: translateY(-20vw) !important;">
+                        <div data-id="posts31"></div>
+                        <div data-id="posts32" style="opacity: 0.1;"></div>
+                        <div data-id="posts33"></div>
+                    </div>
+                    <div data-id="posts4" class="posts" data-auto-animate-target style="--img: url('./posts/3.jpeg'); transform: translateY(-12.5vw) !important;">
+                        <div data-id="posts41"></div>
+                        <div data-id="posts42" style="opacity: 0.1;"></div>
+                        <div data-id="posts43"></div>
+                    </div>
+                    <div data-id="posts5" class="posts" data-auto-animate-target style="--img: url('./posts/4.jpeg'); transform: translateY(-12.5vw) !important;">
+                        <div data-id="posts51"></div>
+                        <div data-id="posts52" style="opacity: 0.1;"></div>
+                        <div data-id="posts53"></div>
+                    </div>
+                    <div data-id="posts6" class="posts" data-auto-animate-target style="--img: url('./posts/5.jpeg'); transform: translateY(-12.5vw) !important;">
+                        <div data-id="posts61"></div>
+                        <div data-id="posts62" style="opacity: 0.1;"></div>
+                        <div data-id="posts63"></div>
+                    </div>
+                    <div data-id="posts7" class="posts" data-auto-animate-target style="--img: #8263ff; transform: translateY(-12.5vw) !important;">
+                        <div data-id="posts71"></div>
+                        <div data-id="posts72" style="opacity: 0.1;"></div>
+                        <div data-id="posts73"></div>
+                    </div>
+                </div>
+                <div class="time" data-id="time">19:10</div>
+            </section>
+            <section data-background-color="#0e131b" data-auto-animate>
+                <div class="all" data-auto-animate-target style="transform: translateX(-55vw) translateY(-3.5vw) !important;">
+                    <div data-id="posts1" class="posts" data-auto-animate-target style="--img: #8263ff; transform: translateY(-65vw) !important;">
+                        <div data-id="posts11"></div>
+                        <div data-id="posts12" style="opacity: 0.1;"></div>
+                        <div data-id="posts13"></div>
+                    </div>
+                    <div data-id="posts2" class="posts" data-auto-animate-target style="--img: url('./posts/1.jpeg'); transform: translateY(-45vw) !important;">
+                        <div data-id="posts21"></div>
+                        <div data-id="posts22" style="opacity: 0.1;"></div>
+                        <div data-id="posts23"></div>
+                    </div>
+                    <div data-id="posts3" class="posts" data-auto-animate-target style="--img: url('./posts/2.jpeg'); transform: translateY(-35vw) !important;">
+                        <div data-id="posts31"></div>
+                        <div data-id="posts32" style="opacity: 1;"></div>
+                        <div data-id="posts33"></div>
+                    </div>
+                    <div data-id="posts4" class="posts" data-auto-animate-target style="--img: url('./posts/3.jpeg'); transform: translateY(-20vw) !important;">
+                        <div data-id="posts41"></div>
+                        <div data-id="posts42" style="opacity: 0.1;"></div>
+                        <div data-id="posts43"></div>
+                    </div>
+                    <div data-id="posts5" class="posts" data-auto-animate-target style="--img: url('./posts/4.jpeg'); transform: translateY(-12.5vw) !important;">
+                        <div data-id="posts51"></div>
+                        <div data-id="posts52" style="opacity: 0.1;"></div>
+                        <div data-id="posts53"></div>
+                    </div>
+                    <div data-id="posts6" class="posts" data-auto-animate-target style="--img: url('./posts/5.jpeg'); transform: translateY(-12.5vw) !important;">
+                        <div data-id="posts61"></div>
+                        <div data-id="posts62" style="opacity: 0.1;"></div>
+                        <div data-id="posts63"></div>
+                    </div>
+                    <div data-id="posts7" class="posts" data-auto-animate-target style="--img: #8263ff; transform: translateY(-12.5vw) !important;">
+                        <div data-id="posts71"></div>
+                        <div data-id="posts72" style="opacity: 0.1;"></div>
+                        <div data-id="posts73"></div>
+                    </div>
+                </div>
+                <div class="time" data-id="time">19:50</div>
+            </section>
+            <section data-background-color="#0e131b" data-auto-animate>
+                <div class="all" data-auto-animate-target style="transform: translateX(-97.5vw) translateY(-3.5vw) !important;">
+                    <div data-id="posts1" class="posts" data-auto-animate-target style="--img: #8263ff; transform: translateY(-65vw) !important;">
+                        <div data-id="posts11"></div>
+                        <div data-id="posts12" style="opacity: 0.1;"></div>
+                        <div data-id="posts13"></div>
+                    </div>
+                    <div data-id="posts2" class="posts" data-auto-animate-target style="--img: url('./posts/1.jpeg'); transform: translateY(-65vw) !important;">
+                        <div data-id="posts21"></div>
+                        <div data-id="posts22" style="opacity: 0.1;"></div>
+                        <div data-id="posts23"></div>
+                    </div>
+                    <div data-id="posts3" class="posts" data-auto-animate-target style="--img: url('./posts/2.jpeg'); transform: translateY(-45vw) !important;">
+                        <div data-id="posts31"></div>
+                        <div data-id="posts32" style="opacity: 0.1;"></div>
+                        <div data-id="posts33"></div>
+                    </div>
+                    <div data-id="posts4" class="posts" data-auto-animate-target style="--img: url('./posts/3.jpeg'); transform: translateY(-35vw) !important;">
+                        <div data-id="posts41"></div>
+                        <div data-id="posts42" style="opacity: 1;"></div>
+                        <div data-id="posts43"></div>
+                    </div>
+                    <div data-id="posts5" class="posts" data-auto-animate-target style="--img: url('./posts/4.jpeg'); transform: translateY(-20vw) !important;">
+                        <div data-id="posts51"></div>
+                        <div data-id="posts52" style="opacity: 0.1;"></div>
+                        <div data-id="posts53"></div>
+                    </div>
+                    <div data-id="posts6" class="posts" data-auto-animate-target style="--img: url('./posts/5.jpeg'); transform: translateY(-12.5vw) !important;">
+                        <div data-id="posts61"></div>
+                        <div data-id="posts62" style="opacity: 0.1;"></div>
+                        <div data-id="posts63"></div>
+                    </div>
+                    <div data-id="posts7" class="posts" data-auto-animate-target style="--img: #8263ff; transform: translateY(-12.5vw) !important;">
+                        <div data-id="posts71"></div>
+                        <div data-id="posts72" style="opacity: 0.1;"></div>
+                        <div data-id="posts73"></div>
+                    </div>
+                </div>
+                <div class="time" data-id="time">PIZZA:TIME</div>
+            </section>
+            <section data-background-color="#0e131b" data-auto-animate>
+                <div class="all" data-auto-animate-target style="transform: translateX(-140vw) translateY(-3.5vw) !important;">
+                    <div data-id="posts1" class="posts" data-auto-animate-target style="--img: #8263ff; transform: translateY(-65vw) !important;">
+                        <div data-id="posts11"></div>
+                        <div data-id="posts12" style="opacity: 0.1;"></div>
+                        <div data-id="posts13"></div>
+                    </div>
+                    <div data-id="posts2" class="posts" data-auto-animate-target style="--img: url('./posts/1.jpeg'); transform: translateY(-65vw) !important;">
+                        <div data-id="posts21"></div>
+                        <div data-id="posts22" style="opacity: 0.1;"></div>
+                        <div data-id="posts23"></div>
+                    </div>
+                    <div data-id="posts3" class="posts" data-auto-animate-target style="--img: url('./posts/2.jpeg'); transform: translateY(-65vw) !important;">
+                        <div data-id="posts31"></div>
+                        <div data-id="posts32" style="opacity: 0.1;"></div>
+                        <div data-id="posts33"></div>
+                    </div>
+                    <div data-id="posts4" class="posts" data-auto-animate-target style="--img: url('./posts/3.jpeg'); transform: translateY(-45vw) !important;">
+                        <div data-id="posts41"></div>
+                        <div data-id="posts42" style="opacity: 0.1;"></div>
+                        <div data-id="posts43"></div>
+                    </div>
+                    <div data-id="posts5" class="posts" data-auto-animate-target style="--img: url('./posts/4.jpeg'); transform: translateY(-35vw) !important;">
+                        <div data-id="posts51"></div>
+                        <div data-id="posts52" style="opacity: 1;"></div>
+                        <div data-id="posts53"></div>
+                    </div>
+                    <div data-id="posts6" class="posts" data-auto-animate-target style="--img: url('./posts/5.jpeg'); transform: translateY(-12.5vw) !important;">
+                        <div data-id="posts61"></div>
+                        <div data-id="posts62" style="opacity: 0.1;"></div>
+                        <div data-id="posts63"></div>
+                    </div>
+                    <div data-id="posts7" class="posts" data-auto-animate-target style="--img: #8263ff; transform: translateY(-12.5vw) !important;">
+                        <div data-id="posts71"></div>
+                        <div data-id="posts72" style="opacity: 0.1;"></div>
+                        <div data-id="posts73"></div>
+                    </div>
+                </div>
+                <div class="time" data-id="time">20:40</div>
+            </section>
+            <section data-background-color="#0e131b" data-auto-animate>
+                <div class="all" data-auto-animate-target style="transform: translateX(-182.5vw) translateY(-3.5vw) !important;">
+                    <div data-id="posts1" class="posts" data-auto-animate-target style="--img: #8263ff; transform: translateY(-65vw) !important;">
+                        <div data-id="posts11"></div>
+                        <div data-id="posts12" style="opacity: 0.1;"></div>
+                        <div data-id="posts13"></div>
+                    </div>
+                    <div data-id="posts2" class="posts" data-auto-animate-target style="--img: url('./posts/1.jpeg'); transform: translateY(-65vw) !important;">
+                        <div data-id="posts21"></div>
+                        <div data-id="posts22" style="opacity: 0.1;"></div>
+                        <div data-id="posts23"></div>
+                    </div>
+                    <div data-id="posts3" class="posts" data-auto-animate-target style="--img: url('./posts/2.jpeg'); transform: translateY(-65vw) !important;">
+                        <div data-id="posts31"></div>
+                        <div data-id="posts32" style="opacity: 0.1;"></div>
+                        <div data-id="posts33"></div>
+                    </div>
+                    <div data-id="posts4" class="posts" data-auto-animate-target style="--img: url('./posts/3.jpeg'); transform: translateY(-65vw) !important;">
+                        <div data-id="posts41"></div>
+                        <div data-id="posts42" style="opacity: 0.1;"></div>
+                        <div data-id="posts43"></div>
+                    </div>
+                    <div data-id="posts5" class="posts" data-auto-animate-target style="--img: url('./posts/4.jpeg'); transform: translateY(-45vw) !important;">
+                        <div data-id="posts51"></div>
+                        <div data-id="posts52" style="opacity: 0.1;"></div>
+                        <div data-id="posts53"></div>
+                    </div>
+                    <div data-id="posts6" class="posts" data-auto-animate-target style="--img: url('./posts/5.jpeg'); transform: translateY(-35vw) !important;">
+                        <div data-id="posts61"></div>
+                        <div data-id="posts62" style="opacity: 1;"></div>
+                        <div data-id="posts63"></div>
+                    </div>
+                    <div data-id="posts7" class="posts" data-auto-animate-target style="--img: #8263ff; transform: translateY(-12.5vw) !important;">
+                        <div data-id="posts71"></div>
+                        <div data-id="posts72" style="opacity: 0.1;"></div>
+                        <div data-id="posts73"></div>
+                    </div>
+                </div>
+                <div class="time" data-id="time">21:20</div>
+            </section>
+            <section data-background-color="#0e131b" data-transition="fade">
+                <div style="text-align: center;">
+                    <div style="color: var(--color1); font-size: calc(100vw / 7.1); font-family: 'Formular Bold' !important; margin-top: -5vh;line-height: 1;">ОТДЕЛЬТНОЕ</div>
+                    <div style="height: 55vh;display: flex; align-items: center; justify-content: space-around;">
+                        <div style="height: 46vh;position: relative;border-radius: 16px;overflow: hidden;">
+                            <img style="height: 100%;margin:0;" src="./sber.png"/>
+                            <img style="height: 6vh;margin:0;position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%);background: #0e131b;padding: 6px;border-radius: 36px;" src="./sber.svg"/>
+                        </div>
+                    </div>
+                    <div style="color: var(--color1); font-size: calc(100vw / 5.2); font-family: 'Formular Bold' !important; margin-bottom: 0vh;line-height: 1;">СПАСИБО</div>
+                </div>
+            </section>
+            <section data-background-color="#0e131b" data-transition="fade">
+                <div style="text-align: center;">
+                    <div style="color: var(--color1); font-size: calc(100vw / 7.1); font-family: 'Formular Bold' !important; margin-top: -5vh;line-height: 1;">ОТДЕЛЬТНОЕ</div>
+                    <div style="height: 55vh;display: flex; align-items: center; justify-content: space-around;">
+                        <div style="height: 26vh;position: relative;border-radius: 16px;overflow: hidden;">
+                            <div style="height: 26vh;margin:0;width: 26vh;background: #8263ff00;"></div>
+                            <img style="height: 28vh;margin:0;position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%);background: #0e131b;padding: 6px; border-radius: 16px;" src="./vk.svg"/>
+                        </div>
+                    </div>
+                    <div style="color: var(--color1); font-size: calc(100vw / 5.2); font-family: 'Formular Bold' !important; margin-bottom: 0vh;line-height: 1;">СПАСИБО</div>
+                </div>
+            </section>
+        </section>
+    </div>
+</div>
+
+<script>
+    RGBA(`
+
+float wave(vec2 p, float size, float amp, float freq, vec2 uv) {
+  float e = 
+    + sin(p.x + time + uv.x * freq * 0.4) * amp
+    + sin(p.x + uv.x * freq) * amp
+    ;
+  p.y = p.y + e;
+  size += size * sin(time + uv.x * 10.) * 0.4;
+  return 1.0 - smoothstep(size - 0.01, size + 0.01, distance(vec2(uv.x, p.y), uv));
+}
+
+void main() {
+   vec2 uv = gl_FragCoord.xy / resolution.xy*2.-1.;
+   uv.y *= resolution.y/resolution.x;
+
+   vec3 fgColor = vec3(0.098, 0.102, 0.173);
+   vec3 bgColor = vec3(0.055, 0.075, 0.106);
+   
+   float d = 0.;
+  d += wave(vec2(10.5, 0.4), 0.2, 0.1, 10., uv) * 0.3;
+  d += wave(vec2(5.5, 0.3), 0.1, 0.1, 10., uv) * 0.5;
+  d += wave(vec2(7.0, 0.1), 0.01, 0.1, 7., uv);
+  d += wave(vec2(0.0, 0.0), 0.05, 0.1, 5., uv);
+  d += wave(vec2(-7.0, -0.1), 0.01, 0.1, 7., uv);
+  d += wave(vec2(-5.0, -0.3), 0.1, 0.1, 10., uv) * 0.5;
+  d += wave(vec2(-15.0, -0.4), 0.2, 0.1, 10., uv) * 0.3;
+
+  vec3 color = mix(bgColor, fgColor, d);
+   
+   gl_FragColor = vec4(color, 1.);
+}
+`, { target: document.getElementById('canvas') });
+
+</script>
+<script>
+    Reveal.initialize({
+        width: '100%',
+        height: '100%',
+        margin: 0,
+        minScale: 1,
+        backgroundTransition: 'slide',
+        maxScale: 1,
+
+        autoAnimate: true,
+        autoAnimateEasing: 'ease',
+        autoAnimateDuration: 1.0,
+        autoAnimateUnmatched: true,
+    });
+</script>
+</body>
+
+</html>
